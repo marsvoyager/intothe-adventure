@@ -1,0 +1,42 @@
+# Prequisites
+*.d
+*.suo
+*.user
+*.ncb
+**/obj/x86/Debug
+**/obj/x86/Release
+**/out/x86/Debug
+**/out/x86/Release
+
+# Compiled Object files
+*.slo
+*.io
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+*.cache
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran modules files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+*.pdb
+
+# Executables
+*.ilk
+*.exe
+*.out
+*.app
