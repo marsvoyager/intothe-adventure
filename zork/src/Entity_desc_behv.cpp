@@ -64,7 +64,7 @@ void Entity::BranchBehaviour::deserialize(std::fstream &advf)
 									return;
 								}
 								if( xson_token(advf, ')')){
-									connection.push_back(std::pair<std::string,int>(branchdesc,branchdest));
+									connection.push_back(std::pair<std::string,int>(branchdesc,branchdest-1));
 									branchcnt++;
 								}
 								else{

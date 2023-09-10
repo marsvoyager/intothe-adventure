@@ -178,6 +178,10 @@
 				RelativePath="..\..\src\efm\Entity.h"
 				>
 			</File>
+			<File
+				RelativePath="..\..\src\efm\Entity_playerImpl.h"
+				>
+			</File>
 		</Filter>
 		<File
 			RelativePath="..\..\src\Entity_desc.cpp"
@@ -189,6 +193,10 @@
 		</File>
 		<File
 			RelativePath="..\..\src\Entity_desc_cin.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\src\Entity_playerImpl.cpp"
 			>
 		</File>
 		<File

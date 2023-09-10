@@ -25,4 +25,5 @@
 #include "Serializer.h"
 
 #include "efm/Entity.h"
+#include "efm/Entity_playerImpl.h"
 using namespace MRK_UTIL;

@@ -6,6 +6,20 @@ using namespace efm;
 
 class Engine{
 	public:
+
+		class Player:public Entity::Player{
+		public:
+			virtual ~Player(){}
+			Player()
+				//:m_pImpl((Entity::Player::Implementation*)&m_pbpimpl)
+			{
+				m_pImpl=&m_pbpimpl;
+				m_pbpimpl.init();			
+			}
+		private:
+			BehaviouralPlayerImplHandler m_pbpimpl;
+		};
+
 		////
 		//class Entity{
 		//public:
@@ -125,9 +139,12 @@ class Engine{
 							printf("Mismatch EOF, error in definition file!");
 							m_Quit = !m_Quit;
 						}
-						else{
-							printf("Level loaded!\n");
-						
+						else if(entities.size()<2){
+							printf("The impossible adventure (<2 nodes)");
+							m_Quit = !m_Quit;
+						}
+						else{			
+							printf("Level loaded!\n");						
 						}
 					}
 				}		
@@ -156,6 +173,16 @@ class Engine{
 			printf("loading default adventure, use 'load' to change");
 
 			deserialize_adventure();
+
+			if(m_Quit){
+				return;
+			}
+
+			//player = Engine::Player();
+			pplayerhandler = ((BehaviouralPlayerImplHandler*)player.getImpl());
+			status(player);
+			//player.print();
+			
 		}
 		
 		virtual void start(){
@@ -168,17 +195,31 @@ class Engine{
 		virtual void handleInput()
 		{
 			string szinput;
-			szinput = peek_read(cin,true);
-			if(szinput.compare("quit") == 0){
+			pplayerhandler = ((BehaviouralPlayerImplHandler*)player.getImpl());
+
+			szinput = pplayerhandler->lastAction();
+			
+			entities[status.getPlayindex()].query(player);			
+			
+			status(player);
+			
+			if(szinput.compare("load") == 0){
+				cout << "Not implemented yet!" << std::endl;
+			}
+			else if(szinput.compare("quit") == 0){
 				m_Quit=!m_Quit;
+			}
+			else if(szinput.compare("status") == 0){
+				status(player);
 			}
 		}
 		virtual void update()
-		{
+		{			
 			handleInput();
-
 		}
-		virtual void draw(){}
+		virtual void draw(){
+			entities[status.getPlayindex()].query(player);
+		}
 
 		virtual void addEntity(Entity &entity){}
 		virtual void removeEntity(){}
@@ -187,7 +228,10 @@ class Engine{
 private:
 	bool m_Quit;
 	std::vector<Entity> entities;
-	};
+	PlayerStatusBehaviour status;
+	Player player;
+	BehaviouralPlayerImplHandler *pplayerhandler;
+};
 
 int _tmain(int argc, _TCHAR* argv[])
 {

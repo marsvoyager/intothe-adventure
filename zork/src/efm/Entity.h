@@ -6,10 +6,24 @@
 namespace efm{
 class Entity{
 public:
+	/////////////
 	class Player{
 	public:
-		virtual  ~Player(){}				
+		//
+		class Implementation{
+		public:
+			virtual ~Implementation(){}		
+		};
+		//
+		virtual ~Player()
+		{	m_pImpl = NULL;}
+
+		Implementation *getImpl(){return m_pImpl;}
+
+	protected:
+		Implementation *m_pImpl;
 	};
+	/////////////
 	class Behaviour : public MRK_UTIL::Serializer{
 	public:
 		virtual  ~Behaviour(){}
@@ -17,6 +31,18 @@ public:
 		
 		virtual void print()=0;
 	};
+	/////////////
+	class BehaviouralPlayerImplementationHandler : public Player::Implementation{
+	public:
+		virtual ~BehaviouralPlayerImplementationHandler(){}
+		virtual int operator()(Behaviour *)=0;
+	};
+	/////////////
+	class StatusBehaviour: public Behaviour{
+	public:
+		virtual ~StatusBehaviour(){}		
+	};
+	/////////////
 	class ShopBehaviour: public Behaviour{
 	public:
 		virtual ~ShopBehaviour(){}				
@@ -47,9 +73,7 @@ public:
 	class EndGameBehaviour: public Behaviour{
 	public:
 		virtual ~EndGameBehaviour(){}				
-		virtual int operator()(Player &player){				
-			return 0;
-		}
+		virtual int operator()(Player &player);
 		virtual void print(){}
 		virtual void deserialize_cin(std::istream &cin){
 		}
@@ -77,15 +101,16 @@ public:
 	class BranchBehaviour: public Behaviour{
 	public:
 		virtual ~BranchBehaviour(){}				
-		virtual int operator()(Player &player){
+		virtual int operator()(Player &player);
+		/*virtual int operator()(Player &player){
 			if(connection.size() == 0){
 				return -1;
 			}
 			return 0;
-		}
+		}*/
 
 		//void setConnections(int max, std::vector<std::pair<std::string,int>> connection){};
-		int getConnection(std::string index){return 0;}//;strtoi(connection.at(strtoi(index)));};
+		int getConnection(std::string index);//{return 0;}//;strtoi(connection.at(strtoi(index)));};
 		int getmaxConnections(){return maxConnections;};
 		virtual void serialize(std::ostream &_cout);
 		virtual void deserialize_cin(std::istream &cin);
@@ -137,7 +162,12 @@ public:
 		}
 		
 	
-		virtual void print(){ std::cout << "t:" << m_type << ": " << m_bstr << "\n";  }
+		virtual void print(bool extra=false){ 
+			if(!extra)
+				std::cout << m_bstr << std::endl;
+			else
+				std::cout << "t:" << m_type << ": " << m_bstr << std::endl;
+		}
 		
 		Behaviour *getBehaviour(){return m_pbehave;}
 		
@@ -185,10 +215,10 @@ public:
 		m_Desc.deserialize(advfile);
 	}
 	
-
-	virtual void query(Player &p){
+	virtual void query(Player &p);
+	/*virtual void query(Player &p){
 		(*m_Desc.getBehaviour())(p);
-	}
+	}*/
 
 protected:
 	DescSerialize m_Desc;
