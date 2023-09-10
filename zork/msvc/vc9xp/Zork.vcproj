@@ -171,6 +171,26 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 		</Filter>
+		<Filter
+			Name="efm"
+			>
+			<File
+				RelativePath="..\..\src\efm\Entity.h"
+				>
+			</File>
+		</Filter>
+		<File
+			RelativePath="..\..\src\Entity_desc.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\src\Entity_desc_behv.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\src\Entity_desc_cin.cpp"
+			>
+		</File>
 		<File
 			RelativePath="..\..\src\main.cpp"
 			>

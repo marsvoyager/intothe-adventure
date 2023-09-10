@@ -23,4 +23,6 @@
 #include "xson_parse.h"
 //
 #include "Serializer.h"
+
+#include "efm/Entity.h"
 using namespace MRK_UTIL;
