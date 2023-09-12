@@ -1,21 +1,94 @@
 // main.cpp: define el punto de entrada de la aplicación de consola.
 #include "stdafx.h"
 
-
+#include <algorithm>
 
 using namespace std;
 using namespace MRK_UTIL;
 using namespace efm;
 
+void Entity::ShopBehaviour::addItem(Entity::ShopBehaviour::ItemPair itemdata, Entity::ShopBehaviour &merkat)
+{
+	items.push_back(itemdata);
+}
+void Entity::ShopBehaviour::removeItem(Entity::ShopBehaviour::ItemPair itemdata, Entity::ShopBehaviour &merkat)
+{
+	items.erase(
+		std::find(items.begin(), items.end(), itemdata));
+}
+
 void Entity::ShopBehaviour::serialize(std::ostream &_cout){
-	_cout << "{maxitems:" << maxItems << ",[";
+	_cout << "{{m:" << maxItems << "},[";
 	for(std::vector<std::pair<std::string,int>>::iterator it = items.begin(); it != items.end(); it++)
 	{
 		_cout << "(\"" << (*it).first <<"\"," << (*it).second << ")";					
 	}
-	_cout << "],{nextsite:" << nextSite << "},";
+	_cout << "],{n:" << nextSite << "},";
 	_cout << "},";
 }
+void Entity::ShopBehaviour::deserialize(std::fstream &advf)
+{
+	int branchcnt = 0;
+	std::string itemdesc;
+	int itemcost;
+
+	if( xson_token(advf, '{') && xson_token(advf, '{')
+		&& xson_token(advf, 'm') && xson_token(advf, ':'))
+	{
+		if(xson_data(advf, maxItems)){
+			if( xson_token(advf, '}') && xson_token(advf, ',')
+				&& xson_token(advf, '[')){
+					do{
+						if( xson_token(advf, '(') && xson_data(advf, itemdesc, '\"')){
+							if( xson_token(advf, ',') && xson_data(advf, itemcost)){
+								/*if(branchdest>MAX_ENTITES){
+									connection.clear();
+									maxConnections=0;
+									return;
+								}*/
+								if( xson_token(advf, ')')){
+									items.push_back(std::pair<std::string,int>(itemdesc,itemcost));
+									branchcnt++;
+								}
+								else{
+									items.clear();
+									maxItems=0;
+									return;
+								}
+							}										
+						}
+					}while(branchcnt < maxItems);
+
+					if(!( xson_token(advf, ']')  && xson_token(advf, ',')))
+					{
+						items.clear();
+						maxItems=0;
+						return;
+					}
+					if( xson_token(advf, '{') && xson_token(advf, 'n') && xson_token(advf, ':')
+						&& xson_data(advf, nextSite))
+					{
+						//TODO:WARNING!
+						nextSite--;
+						if(nextSite>MAX_ENTITES) 
+						{
+							items.clear();
+							maxItems=0;
+							return;
+						}
+						if( !( xson_token(advf, '}')  && xson_token(advf, ',')
+							&& xson_token(advf, '}')  && xson_token(advf, ',')))
+						{
+							items.clear();
+							maxItems=0;
+							return;
+						}
+					}
+			}				
+		}
+	}	
+}
+
 /*
 */
 void Entity::FightBehaviour::serialize(std::ostream &_cout){
@@ -42,6 +115,10 @@ void Entity::BranchBehaviour::serialize(std::ostream &_cout)
 	}
 	//TODO
 	_cout << "]}," << std::endl;
+}
+void Entity::EndGameBehaviour::deserialize(std::fstream &advf)
+{
+
 }
 void Entity::BranchBehaviour::deserialize(std::fstream &advf)
 {

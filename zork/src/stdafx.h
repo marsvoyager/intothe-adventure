@@ -26,4 +26,5 @@
 
 #include "efm/Entity.h"
 #include "efm/Entity_playerImpl.h"
+#include "engine/Engine.h"
 using namespace MRK_UTIL;

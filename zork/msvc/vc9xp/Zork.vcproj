@@ -183,6 +183,18 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="engine"
+			>
+			<File
+				RelativePath="..\..\src\engine\Engine.h"
+				>
+			</File>
+		</Filter>
+		<File
+			RelativePath="..\..\src\Engine.cpp"
+			>
+		</File>
 		<File
 			RelativePath="..\..\src\Entity_desc.cpp"
 			>

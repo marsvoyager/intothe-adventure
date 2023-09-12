@@ -31,31 +31,44 @@ public:
 		
 		virtual void print()=0;
 	};
+	
+/*	class ShopBehaviour;
+	class FightBehaviour;
+	class EndGameBehaviour;
+	class ItemCheckBehaviour;
+	class BranchBehaviour;
+	class StatusBehaviour; //derived from shopbehaviour
+	*/
 	/////////////
 	class BehaviouralPlayerImplementationHandler : public Player::Implementation{
 	public:
 		virtual ~BehaviouralPlayerImplementationHandler(){}
 		virtual int operator()(Behaviour *)=0;
-	};
-	/////////////
-	class StatusBehaviour: public Behaviour{
-	public:
-		virtual ~StatusBehaviour(){}		
-	};
+	};	
 	/////////////
 	class ShopBehaviour: public Behaviour{
 	public:
+		typedef std::pair<std::string, int> ItemPair;
+
 		virtual ~ShopBehaviour(){}				
-		virtual int operator()(Player &player){return 0;}
-		virtual void print(){std::cout << "Tienda\n";}
+		virtual int operator()(Player &player);
+		virtual int getConnection(std::string index){return nextSite;}
+		virtual void print();
 		virtual void deserialize_cin(std::istream &cin);
-		void serialize(std::ostream &_cout);
+		virtual void serialize(std::ostream &_cout);
+		virtual void deserialize(std::fstream &advf);
+		//in-game item management for derived classes
+		virtual void addItem(ItemPair itemdata, ShopBehaviour &merkat);
+		virtual void removeItem(ItemPair itemdata, ShopBehaviour &merkat);
+
 	private:
 		int maxItems;
-		std::vector<std::pair<std::string,int>> items;
+		std::vector<ItemPair> items;
 		int nextSite;
+	public:
+		typedef std::vector<ItemPair>::const_iterator itemit;
 	};
-
+	/////////////
 	class FightBehaviour: public Behaviour{
 	public:
 		virtual ~FightBehaviour(){}				
@@ -69,7 +82,7 @@ public:
 		int enemyAbility, enemyStrenght;
 		int winNextSite, loseNextSite, fleeNextSite; 
 	};
-
+	/////////////
 	class EndGameBehaviour: public Behaviour{
 	public:
 		virtual ~EndGameBehaviour(){}				
@@ -77,12 +90,11 @@ public:
 		virtual void print(){}
 		virtual void deserialize_cin(std::istream &cin){
 		}
-		virtual void deserialize(std::fstream &advf){
-		}
+		virtual void deserialize(std::fstream &advf);
 		virtual void serialize(std::ostream &_cout){
 		}
 	};
-
+	/////////////
 	class ItemCheckBehaviour: public Behaviour{
 	public:
 		virtual ~ItemCheckBehaviour(){}				
@@ -102,13 +114,6 @@ public:
 	public:
 		virtual ~BranchBehaviour(){}				
 		virtual int operator()(Player &player);
-		/*virtual int operator()(Player &player){
-			if(connection.size() == 0){
-				return -1;
-			}
-			return 0;
-		}*/
-
 		//void setConnections(int max, std::vector<std::pair<std::string,int>> connection){};
 		int getConnection(std::string index);//{return 0;}//;strtoi(connection.at(strtoi(index)));};
 		int getmaxConnections(){return maxConnections;};
@@ -125,11 +130,21 @@ public:
 					std::cout << (*it).first << " : " << (*it).second << "\n";
 				}
 		}
-		
-	private:
+		private:
 		int maxConnections;
-		std::vector<std::pair<std::string,int>> connection;
+		std::vector<std::pair<std::string,int>> connection;	
 	};
+	/////////////
+	class StatusBehaviour: public ShopBehaviour{
+	public:
+		virtual ~StatusBehaviour(){}
+		/*virtual Player &getPlayer()
+		{return m_player;}*/
+	private:
+		//Player m_player;
+	};
+	/////////////
+	
 	/////
 	class Desc{
 	public:

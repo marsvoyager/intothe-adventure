@@ -5,18 +5,26 @@
 using namespace std;
 using namespace efm;
 
+
+//PlayerStatusBehaviour::PlayerStatusBehaviour factory()
+//{
+//	PlayerStatusBehaviour playerstatus;
+//
+//}
+
 void Entity::query(Player &p){
 	getDesc().print();
 	(*m_Desc.getBehaviour())(p);
 }
 int Entity::EndGameBehaviour::operator()(Entity::Player &player)
 {
-	return 0;
+	return (*((BehaviouralPlayerImplHandler*)player.getImpl()))(this);		
 }
 int PlayerStatusBehaviour::operator()(Entity::Player &player)
 {
 	print();
 	m_playindex = (*((BehaviouralPlayerImplHandler*)player.getImpl()))(this);
+	ShopBehaviour::print();
 	return m_playindex;
 }
 
@@ -27,6 +35,15 @@ int Entity::BranchBehaviour::operator()(Entity::Player &player){
 	(*((BehaviouralPlayerImplHandler*)player.getImpl()))(this);
 
 	return 0;
+}
+void Entity::ShopBehaviour::print()
+{
+	//typedef std::vector<std::pair<std::string,int>>::const_iterator itemit;
+	ShopBehaviour::itemit currentitem= items.begin();
+	while(currentitem != items.end()){
+		cout << currentitem->first << ", " << currentitem->second << (char)234 << std::endl;
+		currentitem++;
+	}
 }
 
 void BehaviouralPlayerImplHandler::init()
@@ -80,5 +97,71 @@ int BehaviouralPlayerImplHandler::operator()(Entity::BranchBehaviour*s)
 		m_szAction=peek_read(std::cin,true);
 
 	return m_Adventureidx;
+
+}
+
+int Entity::ShopBehaviour::operator()(Entity::Player &player){
+	if(items.empty()){
+		return -1;
+	}
+	return (*((BehaviouralPlayerImplHandler*)player.getImpl()))(this);
+		
+}
+int BehaviouralPlayerImplHandler::operator()(Entity::ShopBehaviour*s)
+{
+	int nextindex=-1;
+	int itemqty;
+	string itemdesc;
+	std::stringstream szparser;
+	if(!m_szAction.empty())
+	{
+		if(m_szAction.compare("No")==0)
+		{
+			nextindex = s->getConnection(m_szAction);
+			if(nextindex!=-1){
+				m_szAction.clear();
+				m_Adventureidx = nextindex;
+				return m_Adventureidx;
+			}
+		}
+
+		szparser << m_szAction;
+		szparser >> itemqty; 
+		std::getline(szparser, itemdesc); //>> itemdesc;
+		m_pstatusbehavinventory->addItem(
+			Entity::ShopBehaviour::ItemPair(itemdesc,itemqty)
+			,*s);
+		return 0;
+		
+		//like branch, needs improvement
+		if(0){
+			nextindex = s->getConnection(m_szAction);
+			if(nextindex!=-1){
+				m_szAction.clear();
+				m_Adventureidx = nextindex;
+			}
+		}
+	}
+	else{
+		cout << "Items available to purchase" << std::endl;
+		s->print();
+		cout << "Interested on any?" << std::endl;
+		m_szAction=peek_read(std::cin,true);
+	}
+
+	return nextindex;
+	
+	//if(!m_szAction.empty())
+	//{
+	//	nextindex = s->getConnection(m_szAction);
+	//	if(nextindex!=-1){
+	//		m_szAction.clear();
+	//		m_Adventureidx = nextindex;
+	//	}
+	//}
+	//else
+	//	m_szAction=peek_read(std::cin,true);
+
+	//return m_Adventureidx;
 
 }
