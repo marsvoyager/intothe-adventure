@@ -1,7 +1,19 @@
 #include "stdafx.h"
-
+#include <locale>
 using namespace std;
 
+std::string toUpper (std::string str, bool skipws){
+	std::locale loc; 
+	std::string n; 
+	for (std::string::size_type i=0; i<str.length(); ++i)
+	{
+		if(skipws && (str[i]==' '))
+			continue;	
+		n += toupper(str[i], loc);
+	}
+		
+    return n;
+}
 int strtoi(std::string sstr)
 {
 	std::stringstream str;
@@ -12,32 +24,45 @@ int strtoi(std::string sstr)
 	return res;
 }
 
-string peek_read(std::istream &cin, bool empty){
+string peek_read(std::istream &_cin, bool empty){
 	string res;
-	char c(cin.peek());
+	stringstream sssupper;
+	char c(_cin.peek());
 	int done=1;
 	while(done)
 	{		
 		if(c=='\n'){
 			if(empty)
 			{
-				cin.get();
+				_cin.get();
 				//res = cin.get();
 				return res;
 			}
 			else
 			{
-				cin.unget();
-				cin >> res;
+				_cin.unget();
+				_cin >> res;
 				c = res[0];
 			}
 		}
-		else if(c!=NULL){
-			cin >> res;
-			cin.get();
+		//else if((c!=NULL) && (c != -1)){			
+		else if(c!=NULL)
+		{
+			std::getline(_cin, res);
+			/*locale loc; 
+			string n;
+			for (string::size_type i=0; i<res.length(); ++i)
+				n += toupper(res[i], loc);*/			
 			done=!done;
-			return res;		
+			return res;
 		}
+		//else{
+		//	cin.unget();
+		//	cin.unget();
+		//	std::getline(_cin, res);
+		//	//if(_cin.eof())
+		//	return res;
+		//}
 	}
 	return res;
 

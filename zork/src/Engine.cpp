@@ -35,7 +35,17 @@ void Engine::init(){
 		return;
 	}
 	pplayerhandler->init();	
+	cout << "ready?" << std::endl;
+	string a("\0");
+	do{
+		a= peek_read(cin,true);
+	}while(a[0]!='Y');
+	cout << "sure?" << std::endl;
+	do{
+		a= peek_read(cin,true);
+	}while(a[0]!='Y');
 	status(_player);	
+	
 }
 void Engine::load(string szfilename)
 {
@@ -122,10 +132,12 @@ void Engine::load(string szfilename)
 				{
 					printf("Mismatch EOF, error in definition file!");
 					m_Quit = !m_Quit;
+					cin.get();
 				}
 				else if(entities.size()<2){
 					printf("The impossible adventure (<2 nodes)");
 					m_Quit = !m_Quit;
+					cin.get();
 				}
 				else{			
 					printf("Level loaded!\n");						
@@ -160,6 +172,7 @@ void Engine::handleInput()
 	//TODO: maybe move to status...
 	if(szinput.compare("load") == 0){
 		cout << "Not implemented yet!" << std::endl;
+		status(_player);
 	}
 	else if(szinput.compare("quit") == 0){
 		m_Quit=!m_Quit;

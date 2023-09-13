@@ -60,7 +60,7 @@ public:
 		//in-game item management for derived classes
 		virtual void addItem(ItemPair itemdata, ShopBehaviour &merkat);
 		virtual void removeItem(ItemPair itemdata, ShopBehaviour &merkat);
-
+		virtual std::vector<ItemPair>::const_iterator getItem(std::string itemdesc);
 	private:
 		int maxItems;
 		std::vector<ItemPair> items;

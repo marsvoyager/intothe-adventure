@@ -20,11 +20,14 @@ int Entity::EndGameBehaviour::operator()(Entity::Player &player)
 {
 	return (*((BehaviouralPlayerImplHandler*)player.getImpl()))(this);		
 }
+void PlayerStatusBehaviour::print(){
+		std::cout << "Status:";
+		Entity::ShopBehaviour::print();
+	}
 int PlayerStatusBehaviour::operator()(Entity::Player &player)
-{
-	print();
+{	
 	m_playindex = (*((BehaviouralPlayerImplHandler*)player.getImpl()))(this);
-	ShopBehaviour::print();
+	
 	return m_playindex;
 }
 
@@ -40,10 +43,12 @@ void Entity::ShopBehaviour::print()
 {
 	//typedef std::vector<std::pair<std::string,int>>::const_iterator itemit;
 	ShopBehaviour::itemit currentitem= items.begin();
+	cout <<  "Items:";
 	while(currentitem != items.end()){
-		cout << currentitem->first << ", " << currentitem->second << (char)234 << std::endl;
+		cout << "("<< currentitem->first << ", " << currentitem->second << (char)234 << "),";
 		currentitem++;
 	}
+	cout << std::endl;
 }
 
 void BehaviouralPlayerImplHandler::init()
@@ -64,6 +69,8 @@ int BehaviouralPlayerImplHandler::operator()(Entity::StatusBehaviour*s)
 		cout << "You have " << m_mney << (char)234 << std::endl;
 	}
 	m_szAction.clear();
+	//((PlayerStatusBehaviour*)s)->print();
+	m_pstatusbehavinventory->print();
 
 	return m_Adventureidx;
 }
@@ -88,10 +95,10 @@ int BehaviouralPlayerImplHandler::operator()(Entity::BranchBehaviour*s)
 	if(!m_szAction.empty())
 	{
 		nextindex = s->getConnection(m_szAction);
-		if(nextindex!=-1){
-			m_szAction.clear();
+		m_szAction.clear();
+		if(nextindex!=-1){			
 			m_Adventureidx = nextindex;
-		}
+		}		
 	}
 	else
 		m_szAction=peek_read(std::cin,true);
@@ -113,9 +120,10 @@ int BehaviouralPlayerImplHandler::operator()(Entity::ShopBehaviour*s)
 	int itemqty;
 	string itemdesc;
 	std::stringstream szparser;
+	Entity::ShopBehaviour::itemit found;
 	if(!m_szAction.empty())
-	{
-		if(m_szAction.compare("No")==0)
+	{		
+		if(  m_szAction.compare("No")==0)
 		{
 			nextindex = s->getConnection(m_szAction);
 			if(nextindex!=-1){
@@ -124,14 +132,33 @@ int BehaviouralPlayerImplHandler::operator()(Entity::ShopBehaviour*s)
 				return m_Adventureidx;
 			}
 		}
-
-		szparser << m_szAction;
+				
+		szparser.setf(szparser.uppercase);
+		szparser << m_szAction;	
 		szparser >> itemqty; 
 		std::getline(szparser, itemdesc); //>> itemdesc;
-		m_pstatusbehavinventory->addItem(
-			Entity::ShopBehaviour::ItemPair(itemdesc,itemqty)
-			,*s);
-		return 0;
+
+		found = s->getItem(itemdesc);
+		if(found != s->getItem(string()))
+		{			
+			for(int i=0; i < itemqty; i++){
+				
+				if(m_mney < found->second)
+				{
+					cout << "No" << ((int)-(found->second)) << "!\n";
+				}
+				else
+				{
+					cout << ((int)-(found->second)) << "!\n";
+					m_pstatusbehavinventory->addItem(
+					*found,
+					*s);
+					
+					m_mney-=(int)found->second;
+				}
+			}
+		}
+		//return 0;
 		
 		//like branch, needs improvement
 		if(0){

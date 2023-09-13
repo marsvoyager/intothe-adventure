@@ -7,6 +7,26 @@ using namespace std;
 using namespace MRK_UTIL;
 using namespace efm;
 
+
+struct FindBy_ItemDesc
+{
+public:
+//bool operator()(T  &lhs) const
+
+//bool operator()(std::vector<Entity::ShopBehaviour::ItemPair>::iterator  &lhs)
+//bool operator==(Entity::ShopBehaviour::ItemPair const &lhs) const
+bool operator()(Entity::ShopBehaviour::ItemPair const  &lhs) const
+{ 	
+	
+	string res;
+	
+	return toUpper(lhs.first,true).compare(rhsitem)==0; 
+}
+string rhsitem;
+//std::stringstream szupper;
+};
+
+
 void Entity::ShopBehaviour::addItem(Entity::ShopBehaviour::ItemPair itemdata, Entity::ShopBehaviour &merkat)
 {
 	items.push_back(itemdata);
@@ -15,6 +35,21 @@ void Entity::ShopBehaviour::removeItem(Entity::ShopBehaviour::ItemPair itemdata,
 {
 	items.erase(
 		std::find(items.begin(), items.end(), itemdata));
+}
+
+Entity::ShopBehaviour::itemit Entity::ShopBehaviour::getItem(string itemdesc)
+{	
+	if(itemdesc.empty())
+		return items.end();
+	
+	FindBy_ItemDesc upcasecompare;
+
+	upcasecompare.rhsitem = toUpper(itemdesc,true);
+	
+	return (std::find_if(
+		items.begin(), items.end(), upcasecompare));
+
+	//return Entity::ShopBehaviour::ItemPair("",0);
 }
 
 void Entity::ShopBehaviour::serialize(std::ostream &_cout){

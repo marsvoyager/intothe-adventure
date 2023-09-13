@@ -53,9 +53,7 @@ public:
 	}
 
 	virtual int operator()(Entity::Player &player);
-	virtual void print(){
-		std::cout << "Status:";
-	}
+	virtual void print();
 	int getPlayindex(){return m_playindex;}
 			//in-game item management for derived classes
 
