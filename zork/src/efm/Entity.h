@@ -173,7 +173,9 @@ public:
 		Desc(const Desc &other)
 			:m_type(other.m_type),m_bstr(other.m_bstr), m_pbehave(other.m_pbehave)
 		{
+#ifdef _DEBUG
 			printf("HEYHEY");
+#endif
 		}
 		
 	

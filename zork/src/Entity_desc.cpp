@@ -78,7 +78,10 @@ void Entity::DescSerialize::deserialize(std::fstream &advf)
 
 		if(  xson_token(advf, '}')  && xson_token(advf, ','))
 		{
+#ifdef _DEBUG
 			print();
+#endif
+			return;
 		}
 		else
 		{

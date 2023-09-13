@@ -27,6 +27,7 @@ Engine::Engine()
 
 void Engine::init(){
 	printf("Zork Adventure Engine Player by Mars 'Martínez' Voyager");
+	printf("Preview build. Use with caution"); 
 	printf("loading default adventure, use 'load' to change");
 
 	deserialize_adventure();
