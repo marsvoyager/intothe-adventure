@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.1684
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Zork", "Zork.vcxproj", "{0969AF71-693B-4796-AED0-E673ABDC3BEF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0969AF71-693B-4796-AED0-E673ABDC3BEF}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0969AF71-693B-4796-AED0-E673ABDC3BEF}.Debug|Win32.Build.0 = Debug|Win32
+		{0969AF71-693B-4796-AED0-E673ABDC3BEF}.Release|Win32.ActiveCfg = Release|Win32
+		{0969AF71-693B-4796-AED0-E673ABDC3BEF}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D5607D60-8044-47B2-B44C-501471A7B7E2}
+	EndGlobalSection
+EndGlobal

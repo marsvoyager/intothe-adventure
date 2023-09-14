@@ -54,7 +54,7 @@ public:
 		virtual int operator()(Player &player);
 		virtual int getConnection(std::string index){return nextSite;}
 		virtual void print();
-		virtual void deserialize_cin(std::istream &cin);
+		virtual void deserialize_cin(std::istream &cin) {}
 		virtual void serialize(std::ostream &_cout);
 		virtual void deserialize(std::fstream &advf);
 		//in-game item management for derived classes
@@ -75,7 +75,7 @@ public:
 		virtual int operator()(Player &player){					
 			return 0;
 		}
-	virtual void deserialize_cin(std::istream &cin);
+		virtual void deserialize_cin(std::istream &cin) {}
 		virtual void print(){}
 		virtual void serialize(std::ostream &_cout);
 	private:
@@ -102,7 +102,7 @@ public:
 			return 0;
 		}
 		virtual void print(){}
-		virtual void deserialize_cin(std::istream &cin);
+		virtual void deserialize_cin(std::istream &cin) {}
 
 		virtual void serialize(std::ostream &_cout);
 	private:
@@ -118,7 +118,7 @@ public:
 		int getConnection(std::string index);//{return 0;}//;strtoi(connection.at(strtoi(index)));};
 		int getmaxConnections(){return maxConnections;};
 		virtual void serialize(std::ostream &_cout);
-		virtual void deserialize_cin(std::istream &cin);
+		virtual void deserialize_cin(std::istream &cin) {}
 		virtual void deserialize(std::fstream &advf);
 
 		virtual void print(){
@@ -211,7 +211,7 @@ public:
 			std::cout << "},\n";
 		}*/
 		virtual void deserialize(std::fstream &advf);
-		virtual void deserialize_cin(std::istream &cin);
+		virtual void deserialize_cin(std::istream &cin) {}
 	
 
 	};

@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Archivos de recursos">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="efm">
+      <UniqueIdentifier>{586d82c8-1db1-4f9b-afdd-9375ac144676}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="engine">
+      <UniqueIdentifier>{d66009da-5813-433b-a34f-5ed77302fd9b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\efm\Entity.h">
+      <Filter>efm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\efm\Entity_playerImpl.h">
+      <Filter>efm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\engine\Engine.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Serializer.h" />
+    <ClInclude Include="..\..\src\stdafx.h" />
+    <ClInclude Include="..\..\src\stdio_utils.h" />
+    <ClInclude Include="..\..\src\targetver.h" />
+    <ClInclude Include="..\..\src\xson_parse.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\Engine.cpp" />
+    <ClCompile Include="..\..\src\Entity_desc.cpp" />
+    <ClCompile Include="..\..\src\Entity_desc_behv.cpp" />
+    <ClCompile Include="..\..\src\Entity_playerImpl.cpp" />
+    <ClCompile Include="..\..\src\main.cpp" />
+    <ClCompile Include="..\..\src\xson_parse.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+</Project>
